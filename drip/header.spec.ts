@@ -85,13 +85,15 @@ import { log } from 'console';
       
       await expect.soft(link).toBeVisible();
       //await expect(link).toBeEnabled();
-      
+      await page.waitForLoadState('networkidle');
        try {
         const [response] = await Promise.all([
           page.waitForResponse(response => response.url().includes(url!) && response.status() < 400, { timeout: 50000 }),
           //page.waitForNavigation({ waitUntil: 'load', timeout: 20000 }),
-          link.click()
+          link.click(),
+          //page.waitForLoadState('networkidle')
         ]);
+        //await page.waitForLoadState('networkidle');
       
         console.log(`Response status for ${url}: ${response.status()}`);
       } catch (error) {
